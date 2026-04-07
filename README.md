@@ -75,6 +75,53 @@ curl http://localhost:8000/stats
 curl http://localhost:8000/health
 ```
 
+## MCP Server
+
+The Great Library also exposes its RAG capabilities as MCP tools via stdio transport, so any LLM agent (Claude Code, Cursor, Copilot, etc.) can ingest and query documents as a tool call.
+
+### Install
+
+```bash
+pip install -r requirements.txt   # includes mcp>=1.0
+```
+
+### Run
+
+```bash
+python mcp_server.py
+```
+
+Starts an MCP stdio server. It logs engine init to stderr and waits for JSON-RPC on stdin.
+
+### Tools
+
+| Tool | Description |
+|------|-------------|
+| `ingest(force=False)` | Ingest documents from `data/` into the RAG engine |
+| `query(query_text, top_k, expand_graph, graph_hops)` | Search for relevant document chunks |
+| `stats()` | Engine statistics (documents, chunks, graph size) |
+| `health()` | Health check (status + Ollama connectivity) |
+
+### Claude Code Configuration
+
+Add to your `claude_desktop_config.json` or `.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "the-great-library": {
+      "command": "python",
+      "args": ["mcp_server.py"],
+      "cwd": "/path/to/the_great_library"
+    }
+  }
+}
+```
+
+### Other MCP Clients
+
+Any MCP-compatible client can launch the server with `python mcp_server.py` as the command. The server speaks JSON-RPC over stdio per the [MCP specification](https://modelcontextprotocol.io).
+
 ## Supported File Types
 
 - `.txt` / `.md` — plain text

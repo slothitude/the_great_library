@@ -8,3 +8,4 @@ networkx>=3.2
 numpy>=1.26
 pypdf>=4.0
 rich>=13.0
+mcp>=1.0
