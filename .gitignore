@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+db/*.index
+db/*.gml
+db/manifest.json
+data/
+.venv/
+*.egg-info/
